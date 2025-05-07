@@ -1,0 +1,3 @@
+##Goal
+
+Setting up a web interface to read data from SenseHat on Raspberry PI
