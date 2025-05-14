@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+
+</head>
+<script src="jquery-3.4.1.min.js"></script>
+
+<script>
+$(function(){
+var leds='leds.json';
+
+$('body').html(leds);
+
+$.get(leds, function(data, status){
+
+    var new_main_node = $("<div>");
+    var new_row_node = $("<div>", {"class":"row"});
+
+    for(var i=0; i<data.length; i++)
+    {
+          var x=i%8;
+          var y=Math.floor(i/8);
+          // New row at first element in row
+          if(x==0) 
+              new_row_node = $("<div>");
+
+	  // New input
+          var new_node = $("<div>", {"class":"col-1"});
+          var new_inputnode = $("<input>",{"id":"LED"+i, "type":"color",'value':data[i], 'style': 'width:80px;'});
+          
+	  // Add input to new node
+          new_node.append(new_inputnode);
+          // Add new node to new row
+	  new_row_node.append(new_node);
+
+          // Append new row to main node if it is last in row
+	  if(x==7)
+            new_main_node.append(new_row_node);
+
+    }
+
+    $('body').html(new_main_node);
+
+});	//end of .get
+
+
+
+});	//end of .ready
+
+
+
+
+</script>
+
+
+
+<body>
+
+</body>
+
+</html>
+
+
+
+
