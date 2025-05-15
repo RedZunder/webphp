@@ -1,68 +1,127 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
+    <script src="jquery-3.4.1.min.js"></script>
+    <style>
 
+        // Grid layout with 8 columns
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-gap: 10px;
+            max-width: 80%;
+            margin: 0 auto;
+        }
 
+        .matrix div {
+            text-align: center;
+        }
+
+	//size of each LED color selector
+        input[type="color"] {
+            width: 60px;
+            height: 60px;
+        }
+
+        .button {
+            padding: 20px 40px;
+            font-size: 16px;
+            background-color: #4CAF50; // Green background
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button:hover {
+            background-color: #45a049; // Darker green
+        }
+
+        .button:focus {
+            outline: none;
+        }
+    </style>
+    <script>
+        // Function to read LED colors and display them in a grid
+        function readLEDS() {
+            var leds = 'http://192.168.137.193:8000/cliled.php?s';  // URL to the JSON file
+
+            // Fetching the LEDs data from the JSON file
+            $.get(leds, function (data, status) {
+                var new_main_node = $("<div>", { "class": "matrix" });
+
+                // Loop through the data and create color inputs
+                for (var i = 0; i < data.length; i++) {
+                    var new_node = $("<div>");
+                    var new_inputnode = $("<input>", {
+                        "id": "LED" + i,
+                        "type": "color",
+                        // Convert RGB to HEX
+                        'value': "#" + ((1 << 24) | (data[i][0] << 16) | (data[i][1] << 8) | data[i][2]).toString(16).slice(1)
+                    });
+
+                    // Bind change event to each color input to trigger POST request when color is changed
+                    new_inputnode.on('change', function () {
+                        postColorChange(this); // Trigger the POST function when any color is changed
+                    });
+
+                    new_node.append(new_inputnode);
+                    new_main_node.append(new_node); // Append to the grid
+                }
+
+                // Replace the body content with the new matrix
+                $('body').html(new_main_node);
+
+                // Create the "Read" button dynamically
+                var new_button = $("<input>", {
+                    "id": "refresh",
+                    "type": "button",
+                    "class": "button",
+                    "value": "Read",
+                    "click": function () {
+                        readLEDS(); // Reload the grid when clicked
+                    }
+                });
+
+                // Append the "Read" button below the matrix
+                $('body').append(new_button);
+            });
+        }
+
+        // Function to send the changed color via POST
+        function postColorChange(input) {
+            var color = $(input).val();  // Get the new color value
+            var index = $(input).attr('id').replace('LED', '');  // Extract index from the input id
+
+            // Send the changed color to the server using POST
+			var x=index%8;
+			var y=Math.floor(index/8);
+			var hex = color.replace('#', '');
+
+			// Convert the hex to RGB
+			let r = parseInt(hex.substring(0, 2), 16); // Red
+			let g = parseInt(hex.substring(2, 4), 16); // Green
+			let b = parseInt(hex.substring(4, 6), 16); // Blue
+
+            $.post('http://192.168.137.193:8000/cliled.php', { x: x, y: y, r:r, g:g, b:b});
+            });
+        }
+
+        // Initialize the grid on page load
+        $(function () {
+            readLEDS();
+        });
+    </script>
 </head>
-<script src="jquery-3.4.1.min.js"></script>
-
-<script>
-$(function(){
-var leds='leds.json';
-
-$('body').html(leds);
-
-$.get(leds, function(data, status){
-
-    var new_main_node = $("<div>");
-    var new_row_node = $("<div>", {"class":"row"});
-
-    for(var i=0; i<data.length; i++)
-    {
-          var x=i%8;
-          var y=Math.floor(i/8);
-          // New row at first element in row
-          if(x==0) 
-              new_row_node = $("<div>");
-
-	  // New input
-          var new_node = $("<div>", {"class":"col-1"});
-          var new_inputnode = $("<input>",{"id":"LED"+i, "type":"color",'value':data[i], 'style': 'width:80px;'});
-          
-	  // Add input to new node
-          new_node.append(new_inputnode);
-          // Add new node to new row
-	  new_row_node.append(new_node);
-
-          // Append new row to main node if it is last in row
-	  if(x==7)
-            new_main_node.append(new_row_node);
-
-    }
-
-    $('body').html(new_main_node);
-
-});	//end of .get
-
-
-
-});	//end of .ready
-
-
-
-
-</script>
-
-
 
 <body>
 
 </body>
 
 </html>
-
-
-
-
