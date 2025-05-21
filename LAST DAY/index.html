@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Home</title>
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  >
+  <style>
+    body, html {
+      height: 100%;
+    }
+    .full-center {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      margin: 0 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container full-center">
+    <div class="text-center">
+      <button
+        type="button"
+        class="btn btn-primary btn-large"
+        onclick="window.location.href='sensors-bootstrap.html';"
+      >
+        View Sensors
+      </button>
+      <button
+        type="button"
+        class="btn btn-success btn-large"
+        onclick="window.location.href='led-bootstrap.html';"
+      >
+        View LED matrix
+      </button>
+    </div>
+  </div>
+</body>
+</html>

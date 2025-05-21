@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sensor Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            const url = "http://192.168.1.1:8000/i2c_sensors.php?ver=1&T&C&P&hPa&H&%&r&deg&y&deg&p&deg";
+
+            $.getJSON(url, function (data) {
+                // Container for the row
+                const row = $('<div class="row text-center">');
+
+                // Loop over each sensor entry
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const sensor = data[key];
+
+                        const col = $('<div class="col-md">').append(
+                            $('<div class="card mb-3">').append(
+                                $('<div class="card-body">').append(
+                                    `<h5 class="card-title">${sensor.sensor}</h5>
+                                     <p class="card-text display-4">${sensor.value}</p>
+                                     <p class="card-text"><small class="text-muted">${sensor.unit}</small></p>`
+                                )
+                            )
+                        );
+
+                        row.append(col);
+                    }
+                }
+
+                // Add the row to the container
+                $('#sensor-data').html(row);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Sensor Readings</h2>
+        <div id="sensor-data"></div>
+
+<!-- Return Button -->
+<div class="container mt-3">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    onclick="window.location.href='index.html';"
+  >
+    ← Back to Home
+  </button>
+</div>
+    </div>
+</body>
+</html>

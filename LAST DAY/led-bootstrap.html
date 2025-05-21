@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sense HAT LED Matrix</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="jquery-3.4.1.min.js"></script>
+
+    <style>
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 30px auto;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            padding: 0;
+            height: 40px;
+            border: none;
+            background: none;
+        }
+    </style>
+
+    <script>
+        function readLEDS() {
+            var leds = 'http://192.168.137.193:8000/cliled.php?s';
+
+            $.get(leds, function (data, status) {
+                var container = $('<div class="container text-center mt-4">');
+                var matrixDiv = $('<div class="matrix mb-4">');
+
+                for (var i = 0; i < data.length; i++) {
+                    var colorInput = $('<input>', {
+                        id: 'LED' + i,
+                        type: 'color',
+                        class: 'form-control',
+                        value: "#" + ((1 << 24) | (data[i][0] << 16) | (data[i][1] << 8) | data[i][2]).toString(16).slice(1)
+                    });
+
+                    colorInput.on('change', function () {
+                        postColorChange(this);
+                    });
+
+                    var colorWrapper = $('<div>');
+                    colorWrapper.append(colorInput);
+                    matrixDiv.append(colorWrapper);
+                }
+
+                var refreshBtn = $('<button>', {
+                    id: 'refresh',
+                    class: 'btn btn-primary',
+                    text: 'Read',
+                    click: function () {
+                        readLEDS();
+                    }
+                });
+
+                container.append(matrixDiv);
+                container.append(refreshBtn);
+
+                $('body').html(container);
+            });
+        }
+
+        function postColorChange(input) {
+            var color = $(input).val();
+            var index = $(input).attr('id').replace('LED', '');
+            var x = index % 8;
+            var y = Math.floor(index / 8);
+            var hex = color.replace('#', '');
+            var r = parseInt(hex.substring(0, 2), 16);
+            var g = parseInt(hex.substring(2, 4), 16);
+            var b = parseInt(hex.substring(4, 6), 16);
+
+            $.post('http://192.168.137.193:8000/cliled.php', { x: x, y: y, r: r, g: g, b: b }, function (response) {
+                console.log('Color ' + color + ' for LED ' + index + ' submitted:', response);
+            }).fail(function () {
+                console.log('Error submitting color for LED ' + index);
+            });
+        }
+
+        $(function () {
+            readLEDS();
+        });
+    </script>
+</head>
+
+<body>
+<!-- Return Button -->
+<div class="container mt-3">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    onclick="window.location.href='index.html';"
+  >
+    ← Back to Home
+  </button>
+</div>
+</body>
+
+</html>
