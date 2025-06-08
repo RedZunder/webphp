@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sensor Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery -->
+    <script src="jquery-3.4.1.min.js"></script>
+
+     <script>
+        function refreshData() {
+            var url = 'http://192.168.137.193:8000/sensors.php';
+
+            $.get(url, function(data) {
+                $('#sensor-list').empty(); // Clear previous data
+
+                $.each(data, function(index, sensor) {
+                    var sensorRow = `
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="${sensor.sensor}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="${sensor.value}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="${sensor.unit}" readonly>
+                                </div>
+                            </div>
+
+                        </div>
+                    `;
+                    $('#sensor-list').append(sensorRow);
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            refreshData(); // Load sensor data on page load
+            setInterval(refreshData, 100); // Refresh data every 50 ms
+        });
+    </script>
+		
+</head>
+<body>
+		<div>
+		<h1 class="text-center mb-4">Sensors Readings</h1>
+		</div>
+<div class="container my-5">
+        
+        <!-- Sensor data will be dynamically injected here -->
+        <div id="sensor-list" class="row">
+            <!-- Dynamic content will be injected here -->
+        </div>
+    </div>
+	
+<!-- Return Button -->
+<div class="container mt-3">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    onclick="window.location.href='index.html';"
+  >
+    ← Back to Home
+  </button>
+
+
+    </div>
+</body>
+</html>

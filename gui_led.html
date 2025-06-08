@@ -4,8 +4,7 @@
 <head>
     <script src="jquery-3.4.1.min.js"></script>
     <style>
-
-        // Grid layout with 8 columns
+        /* Grid layout with 8 columns */
         .matrix {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
@@ -18,7 +17,6 @@
             text-align: center;
         }
 
-	//size of each LED color selector
         input[type="color"] {
             width: 60px;
             height: 60px;
@@ -27,7 +25,7 @@
         .button {
             padding: 20px 40px;
             font-size: 16px;
-            background-color: #4CAF50; // Green background
+            background-color: #4CAF50; /* Green background */
             color: white;
             border: none;
             border-radius: 5px;
@@ -40,7 +38,7 @@
         }
 
         .button:hover {
-            background-color: #45a049; // Darker green
+            background-color: #45a049; /* Darker green on hover */
         }
 
         .button:focus {
@@ -109,7 +107,10 @@
 			let g = parseInt(hex.substring(2, 4), 16); // Green
 			let b = parseInt(hex.substring(4, 6), 16); // Blue
 
-            $.post('http://192.168.137.193:8000/cliled.php', { x: x, y: y, r:r, g:g, b:b});
+            $.post('http://192.168.137.193:8000/cliled.php', { x: x, y: y, r:r, g:g, b:b}, function (response) {
+                console.log('Color ' + color + ' for LED ' + index + ' submitted:', response);
+            }).fail(function () {
+                console.log('Error submitting color for LED ' + index);
             });
         }
 

@@ -50,17 +50,17 @@ if args.r:
     rval=orientation['roll']
     if args.r == 'deg':
         rval=rval*180/math.pi
-    data_out.append({'sensor':'roll','value':rval,'unit':args.r})
+    data_out.append({'roll':rval,'unit':args.r})
 if args.p:
-    pval=orientation['pitch']
+    pval=orientation['roll']
     if args.p == 'deg':
         pval=pval*180/math.pi
-    data_out.append({'sensor':'pitch','value':pval,'unit':args.p})
+    data_out.append({'pitch':pval,'unit':args.p})
 if args.y:
-    yval=orientation['yaw']
+    yval=orientation['roll']
     if args.y == 'deg':
         yval=yval*180/math.pi
-    data_out.append({'sensor':'yaw','value':yval,'unit':args.y})
+    data_out.append({'yaw':yval,'unit':args.y})
 
 
 print(json.dumps(data_out))

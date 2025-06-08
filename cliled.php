@@ -12,7 +12,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	
 	case 'POST':
 	
-	$x=intval($_POST["x"]);
+		$x=intval($_POST["x"]);
 		$y=intval($_POST["y"]);
 		$r=intval($_POST["r"]);
 		$g=intval($_POST["g"]);
@@ -22,6 +22,7 @@ switch($_SERVER["REQUEST_METHOD"])
 
 		shell_exec("python cliled.py -x $x -y $y -r $r -g $g -b $b");
 		
+
 	
 	break;
 	

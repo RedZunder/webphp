@@ -2,14 +2,13 @@
 
 header("Content-type: application/json");
 
-//Testing values
 $data['humidity']=rand(0,100);
 $data['pressure']=rand(0,1000);
 $data['temperature']=rand(-20,50);
 $data['accelerometer']=[rand(-10,10),rand(-10,10),rand(-10,10)];
 $data['gyroscope']=[rand(-10,10),rand(-10,10),rand(-10,10)];
 
-//obtain parameters from URL via GET, or from cURL via POST
+
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET': 
@@ -40,6 +39,15 @@ switch($_SERVER["REQUEST_METHOD"])
 			echo json_encode($data);
 
 		}
+		/*if(isset(last_led))		//To get last modified LED
+		{
+			$leds=json_decode(file_get_contents("leds.json"), true);
+			$index = $x + 8*$y;
+			echo "Last LED saved $x,$y :\n";
+			echo "R: $leds[$index][0]\n";
+			echo "G: $leds[$index][1]\n";
+			echo "B: $leds[$index][2]\n";
+		}*/
 
 	echo "\n\n";
 	break;
@@ -75,12 +83,6 @@ switch($_SERVER["REQUEST_METHOD"])
 	
 	default:	echo "You made a mistake\n";	break;
 }
-
-
-
-
-
-
 
 
 

@@ -59,10 +59,20 @@
                         readLEDS();
                     }
                 });
+				var idxBtn = $('<button>', {
+                    id: 'index',
+                    class: 'btn btn-primary',
+                    text: '<- Back',
+                    click: function(){
+					window.location.href='index.html';
+					}
+    
+                });
 
                 container.append(matrixDiv);
                 container.append(refreshBtn);
-
+                container.append(idxBtn);
+				
                 $('body').html(container);
             });
         }

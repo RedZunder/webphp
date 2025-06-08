@@ -9,9 +9,9 @@ sens=SenseHat()
 parser=argparse.ArgumentParser(prog='parserProgram')
 parser.add_argument('-x',help='set X coordinate of LED')
 parser.add_argument('-y',help='set Y coordinate of LED')
-parser.add_argument('-r',help='set R value of LED')
-parser.add_argument('-g',help='set G value of LED')
-parser.add_argument('-b',help='set B value of LED')
+parser.add_argument('-r',help='set Y coordinate of LED')
+parser.add_argument('-g',help='set Y coordinate of LED')
+parser.add_argument('-b',help='set Y coordinate of LED')
 parser.add_argument('-s', action="store_true",help='Show current LED matrix')
 
 

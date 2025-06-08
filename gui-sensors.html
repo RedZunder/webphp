@@ -5,50 +5,46 @@
     <title>LED matrix interface</title>
 	<script src="jquery-3.4.1.min.js"></script>
 	<script>
-<-- [{"sensor":"pressure","value"=241.42,"unit"="hPa"}]-->
 
-		var url = '../../server_sensehat_mockup/sense.php';
-
-		$.get(url, function(data, status){	
-			var sensor = JSON.parse(data);
-			var div = $("<div>", {
-				id: "s_"+sensor.sensor,
-				"class": 'sensor',
-				title: sensor.sensor,
-			});
-
-<!-- add the element to the body for display -->
-			$("body").append(div);	
-		<!-- add value to the element -->
-			$("#s_"+sensor.id).html(sensor.value+" "+sensor.unit);
-		});
-	</script>
-
-	<script>
-
-	var refresh_bttn = $("<input>",{"id":"refresh", "type":"button", "value":"Refresh data"});
+	var url = 'http://192.168.137.193:8000/sensors.php?ver=1&T&P&H&r&y&p';
 
 	<!-- when the button is clicked: -->
-        clear_input.click(function(){
+	function refreshData()
+	{
+		$.get(url, function(data, status) 
+		{
+				// Loop through each sensor in the data array
+				$.each(data, function(index, sensorData)
+				{
+					// Create the div for each sensor
+					var div = $("<div>", 
+					{
+						id: "s_" + sensorData.sensor,
+						"class": 'sensor',
+						title: sensorData.sensor,
+					});
+					console.log(sensorData);
+					console.log(div);
 
-		$("[id^=LED]").val(0);
-		url = "http://192.168.113.104/webinterface/setpixel.php?&C=1";          
+					// Add the element to the body for display
+					$("body").append(div);
 
-		$.get(url, function(data, status){
-			var sensor = JSON.parse(data);
-			var div = $("<div>", {
-				id: "s_"+sensor.sensor,
-				"class": 'sensor',
-				title: sensor.sensor,
-		});
+					// Add the value to the element (format: sensor name: value unit)
+					$("#" + div.attr('id')).html(sensorData.sensor + ": " + sensorData.value + " " + sensorData.unit);
+					
+				});
+			});
+	};
 
-		$("#s_"+sensor.id).html(sensor.value+" "+sensor.unit);
-	});  
-        
-
-        $("body").append(refresh_bttn);
-
+	setInterval(refreshData,500);
 	</script>
+	
+</head>
 
+<body>
+	<input id="refresh" type="button" value="Refresh" onclick="refreshData()">
+</body>
+
+</html>
 
 

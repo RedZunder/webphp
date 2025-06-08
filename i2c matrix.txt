@@ -1,0 +1,24 @@
+
+//for LED number i
+
+x=i%8;
+y=Math.floor(i/8);
+
+r_reg=x + 24*y
+g_reg=x + 24*y + 8
+b_reg=x + 24*y + 16
+
+adds = 0x46
+
+
+r_val = i2cget -y 1 adds r_reg;
+g_val = i2cget -y 1 adds g_reg; 
+b_val = i2cget -y 1 adds b_reg;
+
+
+
+
+// set colors
+i2cset -y 1 adds r_reg r; i2cset -y 1 adds g_reg g; i2cset -y 1 adds b_reg b;
+
+
