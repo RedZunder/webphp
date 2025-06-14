@@ -9,4 +9,4 @@ The reading of sensors is done with I2C, and the reading from and writing to the
 - [x] Write PHP that will directly communicate via I2C with SenseHat
 - [x] Make HTML/CSS dynamic interface for the user (jQuery)
 - [x] Use I2C for reading sensors
-- [ ] Keep sensor reading response <100 ms
+- [x] Keep sensor reading response <200 ms
